@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: shop-app
+  namespace: shop
+  labels:
+    app: shop-app
+spec:
+  selector:
+    app: shop-app
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
