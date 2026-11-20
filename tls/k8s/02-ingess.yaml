@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web
+  namespace: lab
+  annotations:
+    cert-manager.io/cluster-issuer: lab-ca-issuer
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts: [demo.lab.local]
+      secretName: demo-tls
+  rules:
+    - host: demo.lab.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: web
+                port:
+                  number: 80
