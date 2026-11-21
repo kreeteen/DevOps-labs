@@ -23,3 +23,9 @@ serviceMonitor:
 alerts:
   enabled: true
   errorRatioThreshold: 0.05
+
+ingress:
+  enabled: true
+  className: nginx
+  host: shop.lab.local
+  clusterIssuer: lab-ca-issuer
