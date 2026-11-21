@@ -5,8 +5,8 @@
     "name": "adgrjw8",
     "namespace": "default",
     "uid": "33641ad0-4513-42ae-9f19-96b11fb5ac8e",
-    "resourceVersion": "1795260395753981",
-    "generation": 5,
+    "resourceVersion": "1795283709470012",
+    "generation": 9,
     "creationTimestamp": "2026-11-21T11:20:24Z",
     "labels": {
       "grafana.app/deprecatedInternalID": "2905187939250176"
@@ -15,7 +15,7 @@
       "grafana.app/createdBy": "user:eg4yibrdkta0we",
       "grafana.app/saved-from-ui": "Grafana v13.3.1 (da3aa3ff57)",
       "grafana.app/updatedBy": "user:eg4yibrdkta0we",
-      "grafana.app/updatedTimestamp": "2026-11-21T11:26:35Z"
+      "grafana.app/updatedTimestamp": "2026-11-21T17:55:09Z"
     }
   },
   "spec": {
@@ -226,12 +226,18 @@
                       {
                         "value": 80,
                         "color": "red"
+                      }
+                    ]
+                  },
                   "color": {
                     "mode": "palette-classic"
                   },
                   "custom": {
                     "axisBorderShow": false,
                     "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
                     "barAlignment": 0,
                     "barWidthFactor": 0.6,
                     "drawStyle": "line",
@@ -239,6 +245,9 @@
                     "gradientMode": "none",
                     "hideFrom": {
                       "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
                     "insertNulls": false,
                     "lineInterpolation": "linear",
                     "lineWidth": 1,
@@ -255,6 +264,9 @@
                     },
                     "thresholdsStyle": {
                       "mode": "off"
+                    }
+                  }
+                },
                 "overrides": []
               }
             }
@@ -419,40 +431,26 @@
             "version": "13.3.1",
             "spec": {
               "options": {
-                    }
-                  }
-                },
                 "legend": {
                   "calcs": [],
                   "displayMode": "list",
-                      "tooltip": false,
-                      "viz": false
-                    },
                   "placement": "bottom",
                   "showLegend": true
                 },
                 "tooltip": {
-                    "axisColorMode": "text",
-                    "axisLabel": "",
-                    "axisPlacement": "auto",
                   "hideZeros": false,
                   "mode": "single",
                   "sort": "none"
-                      }
-                    ]
-                  },
                 }
               },
               "fieldConfig": {
                 "defaults": {
                   "thresholds": {
-
                     "mode": "absolute",
                     "steps": [
                       {
                         "value": 0,
                         "color": "green"
-
                       },
                       {
                         "value": 80,
@@ -491,19 +489,195 @@
                     "spanNulls": false,
                     "stacking": {
                       "group": "A",
-
                       "mode": "none"
                     },
                     "thresholdsStyle": {
-
                       "mode": "off"
                     }
-
                   }
                 },
                 "overrides": []
               }
-
+            }
+          }
+        }
+      },
+      "panel-5": {
+        "kind": "Panel",
+        "spec": {
+          "id": 5,
+          "title": "Log errors",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "loki",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "fg4zo74cblvy8e"
+                      },
+                      "spec": {
+                        "direction": "backward",
+                        "editorMode": "code",
+                        "expr": "sum(rate({namespace=\"shop\", app=\"shop-app\"} | json | level=\"ERROR\" [1m]))",
+                        "legendFormat": "errors/s",
+                        "queryType": "range"
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "timeseries",
+            "version": "13.3.1",
+            "spec": {
+              "options": {
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": true
+                },
+                "tooltip": {
+                  "hideZeros": false,
+                  "mode": "single",
+                  "sort": "none"
+                }
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 80,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "barAlignment": 0,
+                    "barWidthFactor": 0.6,
+                    "drawStyle": "line",
+                    "fillOpacity": 0,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "insertNulls": false,
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "auto",
+                    "showValues": false,
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  }
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "panel-6": {
+        "kind": "Panel",
+        "spec": {
+          "id": 6,
+          "title": "Error's logs",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "loki",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "fg4zo74cblvy8e"
+                      },
+                      "spec": {
+                        "direction": "backward",
+                        "editorMode": "code",
+                        "expr": "{namespace=\"shop\", app=\"shop-app\"} | json | level=\"ERROR\"",
+                        "queryType": "range"
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "logs",
+            "version": "13.3.1",
+            "spec": {
+              "options": {
+                "dedupStrategy": "none",
+                "enableInfiniteScrolling": false,
+                "enableLogDetails": true,
+                "prettifyLogMessage": true,
+                "showControls": false,
+                "showFieldSelector": false,
+                "showLevel": true,
+                "showLogAttributes": true,
+                "showTime": true,
+                "sortOrder": "Descending",
+                "timestampResolution": "ms",
+                "unwrappedColumns": false,
+                "wrapLogMessage": true
+              },
+              "fieldConfig": {
+                "defaults": {},
+                "overrides": []
+              }
             }
           }
         }
@@ -511,7 +685,6 @@
     },
     "layout": {
       "kind": "AutoGridLayout",
-
       "spec": {
         "maxColumnCount": 3,
         "columnWidthMode": "standard",
@@ -549,12 +722,29 @@
             "spec": {
               "element": {
                 "kind": "ElementReference",
+                "name": "panel-5"
+              }
+            }
+          },
+          {
+            "kind": "AutoGridLayoutItem",
+            "spec": {
+              "element": {
+                "kind": "ElementReference",
                 "name": "panel-4"
+              }
+            }
+          },
+          {
+            "kind": "AutoGridLayoutItem",
+            "spec": {
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-6"
               }
             }
           }
         ]
-
       }
     },
     "links": [],
@@ -562,15 +752,13 @@
     "preload": false,
     "tags": [],
     "timeSettings": {
-
       "timezone": "browser",
-      "from": "now-1h",
-      "to": "now",
-      "autoRefresh": "",
+      "from": "2026-11-21T17:46:30.924Z",
+      "to": "2026-11-21T17:50:37.558Z",
+      "autoRefresh": "10s",
       "autoRefreshIntervals": [
         "5s",
         "10s",
-
         "30s",
         "1m",
         "5m",
@@ -578,7 +766,6 @@
         "30m",
         "1h",
         "2h",
-
         "1d"
       ],
       "hideTimepicker": false,
