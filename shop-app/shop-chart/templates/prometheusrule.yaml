@@ -1,0 +1,25 @@
+{{- if .Values.alerts.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app: {{ .Release.Name }}
+    release: kps
+spec:
+  groups:
+    - name: shop-app.rules
+      rules:
+        - alert: ShopAppHighErrorRate
+          expr: |
+            sum(rate(app_requests_total{status="500",path!="/health"}[1m]))
+            /
+            sum(rate(app_requests_total{path!="/health"}[1m]))
+            > {{ .Values.alerts.errorRatioThreshold }}
+          for: 1m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Высокая доля ошибок в shop-app"
+            description: "Доля 5xx: {{ "{{ $value | humanizePercentage }}" }}"
+{{- end }}

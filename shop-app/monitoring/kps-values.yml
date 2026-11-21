@@ -1,0 +1,24 @@
+prometheus:
+  prometheusSpec:
+    # без этого Prometheus берёт только ServiceMonitor с меткой своего релиза
+    serviceMonitorSelectorNilUsesHelmValues: false
+    retention: 2d
+    resources:
+      requests:
+        cpu: 100m
+        memory: 400Mi
+
+grafana:
+  adminPassword: admin123   # только для лаборатории
+
+# в Minikube эти компоненты недоступны или шумят ложными алертами
+nodeExporter:
+  enabled: false
+kubeEtcd:
+  enabled: false
+kubeScheduler:
+  enabled: false
+kubeControllerManager:
+  enabled: false
+kubeProxy:
+  enabled: false
