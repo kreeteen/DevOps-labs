@@ -22,4 +22,11 @@ spec:
           annotations:
             summary: "Высокая доля ошибок в shop-app"
             description: "Доля 5xx: {{ "{{ $value | humanizePercentage }}" }}"
+        - alert: ShopAppPodRestarting
+          expr: increase(kube_pod_container_status_restarts_total{namespace="shop"}[10m]) > 2
+          for: 1m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Под {{ "{{ $labels.pod }}" }} часто перезапускается"
 {{- end }}
