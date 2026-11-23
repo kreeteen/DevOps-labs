@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-test
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 100Mi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pvc-test
+spec:
+  nodeSelector:
+    kubernetes.io/hostname: multi-m02
+  containers:
+    - name: c
+      image: busybox:1.36
+      command: ["sh", "-c", "echo ok > /data/f && cat /data/f && sleep 3600"]
+      volumeMounts:
+        - name: d
+          mountPath: /data
+  volumes:
+    - name: d
+      persistentVolumeClaim:
+        claimName: pvc-test

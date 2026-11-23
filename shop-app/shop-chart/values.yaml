@@ -29,3 +29,12 @@ ingress:
   className: nginx
   host: shop.lab.local
   clusterIssuer: lab-ca-issuer
+
+topologySpread:
+  enabled: true
+  maxSkew: 1
+  whenUnsatisfiable: ScheduleAnyway
+
+pdb:
+  enabled: true
+  minAvailable: 1
