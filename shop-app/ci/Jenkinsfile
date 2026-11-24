@@ -1,0 +1,39 @@
+pipeline {
+  agent any
+  parameters {
+    string(name: 'MEM_LIMIT', defaultValue: '128Mi', description: 'memory limit для проверки')
+  }
+  environment {
+    CHART = '/repo/shop-app/shop-chart'
+  }
+  stages {
+    stage('Lint') {
+      steps { sh 'helm lint $CHART' }
+    }
+    stage('Render') {
+      steps {
+        sh 'helm template shop-app $CHART --set resources.limits.memory=$MEM_LIMIT > rendered.yaml'
+        sh 'wc -l rendered.yaml'
+      }
+    }
+    stage('Policy: memory limit') {
+      steps {
+        sh '''
+          LIM=$(grep -A3 'limits:' rendered.yaml | grep memory | grep -o '[0-9]*' | head -1)
+          echo "memory limit: ${LIM}Mi"
+          [ "$LIM" -ge 64 ] || { echo "limit below 64Mi, blocked"; exit 1; }
+        '''
+      }
+    }
+    stage('Scripts syntax') {
+      steps {
+        sh 'bash -n /repo/scripts/backup_db.sh && echo "backup_db.sh ok"'
+      }
+    }
+  }
+  post {
+    always  { archiveArtifacts artifacts: 'rendered.yaml', allowEmptyArchive: true }
+    success { echo 'CI passed' }
+    failure { echo 'CI failed' }
+  }
+}
